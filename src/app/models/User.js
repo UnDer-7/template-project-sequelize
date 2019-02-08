@@ -1,6 +1,7 @@
 'use strict'
 
 const bcrypt = require('bcryptjs')
+const sequelizePaginate = require('sequelize-paginate')
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -37,5 +38,7 @@ module.exports = (sequelize, DataTypes) => {
   User.prototype.checkPassword = function (password) {
     return bcrypt.compare(password, this.password_hash)
   }
+
+  sequelizePaginate.paginate(User)
   return User
 }

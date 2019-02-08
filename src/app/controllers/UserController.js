@@ -26,14 +26,16 @@ class UserController {
   }
 
   async getAllUser (req, res) {
-    const { offset, limit } = paginate(req.query.page, req.query.pageSize)
+    const { page = 1, paginate = 25 } = req.query
+
+    const options = {
+      page: page,
+      paginate: paginate
+    }
 
     try {
-      const users = await User.findAll({
-        offset: offset,
-        limit: limit
-      })
-      return res.status('200').json(users)
+      const { docs, pages, total } = await User.paginate(options)
+      return res.status('200').json({ docs, pages: pages, total: total })
     } catch (e) {
       return res.status('400').json({ error: e })
     }
