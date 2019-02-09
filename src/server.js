@@ -1,25 +1,25 @@
 'use strict'
+
 require('dotenv').config()
 
 const express = require('express')
 const validate = require('express-validation')
+const morgan = require('morgan')
 const Youch = require('youch')
 
 class App {
   constructor () {
     this.express = express()
 
-    this.database()
     this.middleware()
     this.routes()
     this.exception()
   }
 
-  database () {
-  }
-
   middleware () {
+    this.express.disable('x-powered-by')
     this.express.use(express.json())
+    this.express.use(morgan('dev'))
   }
 
   routes () {

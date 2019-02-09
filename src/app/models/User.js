@@ -35,10 +35,6 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
   }
 
-  User.prototype.checkPassword = function (password) {
-    return bcrypt.compare(password, this.password_hash)
-  }
-
   sequelizePaginate.paginate(User)
   return User
 }

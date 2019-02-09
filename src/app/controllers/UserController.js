@@ -1,4 +1,5 @@
 'use strict'
+
 const { User } = require('../models')
 
 class UserController {
@@ -19,7 +20,7 @@ class UserController {
           individualHooks: true,
           where: { id: req.params.id }
         })
-      res.status(updatedUser ? '200' : '404').json(updatedUser)
+      res.status(updatedUser ? '201' : '404').json(updatedUser)
     } catch (e) {
       res.status('400').json({ error: e })
     }
@@ -42,20 +43,25 @@ class UserController {
   }
 
   async getUser (req, res) {
-    // const templateentityRes = await TemplateEntityModel.findById(req.params.id)
-    // return res.json(templateentityRes)
+    try {
+      const user = await User.findByPk(req.params.id)
+      return res.status(user ? '200' : '404').json(user)
+    } catch (e) {
+      return res.status('400').json({ error: e })
+    }
   }
 
   async deleteUser (req, res) {
-    // await TemplateEntityModel.findByIdAndDelete(req.params.id)
-    // return res.send()
+    try {
+      const user = await User.destroy({
+        where: { id: req.params.id },
+        limit: 1
+      })
+      return res.status(user ? '200' : '400').json({ rowsDeleted: user })
+    } catch (e) {
+      return res.status('400').json({ error: e })
+    }
   }
 }
+
 module.exports = new UserController()
-
-const paginate = (page, pageSize) => {
-  const offset = page * pageSize
-  const limit = offset + pageSize
-
-  return { offset: offset, limit: limit }
-}
