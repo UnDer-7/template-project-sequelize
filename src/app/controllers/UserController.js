@@ -5,10 +5,12 @@ const { User } = require('../models')
 class UserController {
   async createUser (req, res) {
     try {
+      const verify = await User.findOne({ where: { email: req.body.email } })
+      if (!verify) return res.status('400').json({ error: 'User already exists' })
       const user = await User.create(req.body)
-      return res.status(201).json(user)
+      return res.status('201').json(user)
     } catch (e) {
-      return res.status(400).json({ error: e })
+      return res.status('400').json({ error: e })
     }
   }
 

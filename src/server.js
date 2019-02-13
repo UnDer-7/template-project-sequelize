@@ -4,7 +4,7 @@ require('dotenv').config()
 
 const express = require('express')
 const validate = require('express-validation')
-const morgan = require('morgan')
+const logger = require('morgan')
 const Youch = require('youch')
 
 class App {
@@ -17,9 +17,9 @@ class App {
   }
 
   middleware () {
+    this.express.use(logger('dev'))
     this.express.disable('x-powered-by')
     this.express.use(express.json())
-    this.express.use(morgan('dev'))
   }
 
   routes () {

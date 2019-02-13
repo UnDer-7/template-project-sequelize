@@ -9,8 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      login: {
-        type: Sequelize.STRING
+      email: {
+        type: Sequelize.STRING,
+        unique: true
       },
       password_hash: {
         type: Sequelize.STRING

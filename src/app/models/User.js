@@ -2,10 +2,11 @@
 
 const bcrypt = require('bcryptjs')
 const sequelizePaginate = require('sequelize-paginate')
+const jwt = require('jsonwebtoken')
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    login: {
+    email: {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false
@@ -35,6 +36,13 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
   }
 
+  User.prototype.createToke = function ({ id }) {
+    return jwt.sign({ data: id }, process.env.APP_SECRET, { expiresIn: '1h' })
+  }
+
+  User.prototype.checkPassword = function (password, password_hash) {
+    return bcrypt.compare(password, password_hash)
+  }
   sequelizePaginate.paginate(User)
   return User
 }
