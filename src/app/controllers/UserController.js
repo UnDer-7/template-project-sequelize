@@ -6,11 +6,15 @@ class UserController {
   async createUser (req, res) {
     try {
       const verify = await User.findOne({ where: { email: req.body.email } })
-      if (!verify) return res.status('400').json({ error: 'User already exists' })
+      if (verify) {
+        return res.status(400).json({ error: 'User already exists' })
+      }
+
       const user = await User.create(req.body)
-      return res.status('201').json(user)
+      return res.status(201).json(user)
     } catch (e) {
-      return res.status('400').json({ error: e })
+      console.trace(e)
+      return res.status(500).json({ error: e })
     }
   }
 
@@ -22,9 +26,10 @@ class UserController {
           individualHooks: true,
           where: { id: req.params.id }
         })
-      res.status(updatedUser ? '201' : '404').json(updatedUser)
+      res.status(updatedUser ? 200 : 404).json(updatedUser)
     } catch (e) {
-      res.status('400').json({ error: e })
+      console.trace(e)
+      res.status(500).json({ error: e })
     }
   }
 
@@ -38,18 +43,20 @@ class UserController {
 
     try {
       const { docs, pages, total } = await User.paginate(options)
-      return res.status('200').json({ docs, pages: pages, total: total })
+      return res.status(200).json({ docs, pages: pages, total: total })
     } catch (e) {
-      return res.status('400').json({ error: e })
+      console.trace(e)
+      return res.status(500).json({ error: e })
     }
   }
 
   async getUser (req, res) {
     try {
       const user = await User.findByPk(req.params.id)
-      return res.status(user ? '200' : '404').json(user)
+      return res.status(user ? 200 : 404).json(user)
     } catch (e) {
-      return res.status('400').json({ error: e })
+      console.trace(e)
+      return res.status(500).json({ error: e })
     }
   }
 
@@ -59,9 +66,10 @@ class UserController {
         where: { id: req.params.id },
         limit: 1
       })
-      return res.status(user ? '200' : '400').json({ rowsDeleted: user })
+      return res.status(user ? 200 : 400).json({ rowsDeleted: user })
     } catch (e) {
-      return res.status('400').json({ error: e })
+      console.trace(e)
+      return res.status(500).json({ error: e })
     }
   }
 }
