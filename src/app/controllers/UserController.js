@@ -6,6 +6,7 @@ class UserController {
   async createUser (req, res) {
     try {
       const verify = await User.findOne({ where: { email: req.body.email } })
+
       if (verify) {
         return res.status(400).json({ error: 'User already exists' })
       }

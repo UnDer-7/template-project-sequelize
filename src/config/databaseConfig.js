@@ -8,7 +8,7 @@ module.exports = {
     host: 'localhost',
     dialect: 'postgres',
     port: 5432,
-    operatorsAliases: false,
+    operatorsAliases: false
   },
   test: {
     username: '',
@@ -16,7 +16,7 @@ module.exports = {
     database: '',
     host: '127.0.0.1',
     dialect: '',
-    operatorsAliases: false,
+    operatorsAliases: false
   },
   production: {
     username: '',
@@ -24,6 +24,6 @@ module.exports = {
     database: '',
     host: '127.0.0.1',
     dialect: '',
-    operatorsAliases: false,
+    operatorsAliases: false
   }
 }
